@@ -1,8 +1,8 @@
-import { FortRounded } from "@mui/icons-material";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import {history} from "../.."
-axios.defaults.baseURL = 'https://localhost:7024/api/';
+axios.defaults.baseURL = 'http://localhost:5000/api/';
+axios.defaults.withCredentials = true;
 
 const responseBody = (response: AxiosResponse) => response.data;
 const sleep = () => new Promise(resolve => {setTimeout(resolve, 500)});
@@ -64,8 +64,15 @@ const testErrors = {
     getValidationError: () => resquests.get('buggy/validation-error')
 }
 
+const Basket = {
+    get: () => resquests.get('basket'),
+    addItem: (productId: number, quantity=1) => resquests.post(`basket?productId=${productId}&quantity=${quantity}`),
+    removeItem: (productId: number, quantity=1) => resquests.delete(`basket?productId=${productId}&quantity=${quantity}`)
+}
+
 const agent = {
     Catalog,
-    testErrors
+    testErrors,
+    Basket
 }
 export default agent;
